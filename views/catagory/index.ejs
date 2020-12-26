@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="/frameworks/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/frameworks/css/bootstrap-grid.min.css" />
+    <link rel="stylesheet" href="/frameworks/css/nav.css" />
+    <link rel="stylesheet" href="/frameworks/css/menu.css" />
+    <link rel="stylesheet" href="/frameworks/css/videos.css" />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      src="https://kit.fontawesome.com/dda5cbe6fd.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>VelixClips</title>
+  </head>
+  <body>
+    <!-- Including Nav Structure -->
+    <%- include('../../includes/nav.ejs') %>
+
+    <section class="row col-12 container">
+      <%- include('../../includes/menu.ejs') %>
+
+      <main class="col">
+        <span class="page-title col-12 row"><%= title %></span>
+        <div class="section-container">
+          <span class="section-title">Recent Videos</span>
+          <span class="section-content" id="recent-videos"> </span>
+        </div>
+
+        <div class="menu-line col-9" style="margin: 50px auto"></div>
+
+        <div
+          class="section-container-content-creators"
+          style="margin-top: 35px"
+        >
+          <span class="section-title">Content Creators | <%= title %></span>
+          <span
+            class="section-content-content-creators"
+            id="trending-creators"
+            style="margin-left: 15px"
+          >
+          </span>
+        </div>
+
+        <div class="menu-line col-9" style="margin: 50px auto"></div>
+
+        <div class="section-container">
+          <span class="section-title">Top <%= title %> Videos</span>
+          <span class="section-content" id="top-videos"> </span>
+        </div>
+      </main>
+      <input
+        type="text"
+        disabled
+        hidden
+        id="section-tag"
+        value="<%= title %>"
+      />
+    </section>
+
+    <%- include('../../includes/footer.ejs') %>
+    <script src="../frameworks/js/jquery-3.3.1.min.js"></script>
+    <script src="../frameworks/js/bootstrap.bundle.min.js"></script>
+    <script src="../frameworks/js/bootstrap.min.js"></script>
+    <script src="../frameworks/js/menu.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

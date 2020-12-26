@@ -1,0 +1,150 @@
+html {
+  font-family: "Roboto", sans-serif !important;
+  font-size: 17px;
+  height: 100%;
+  color: #242424;
+}
+body {
+  max-width: 1900px;
+  width: 100%;
+  padding: 0px;
+  height: 100%;
+  margin: auto;
+}
+.container-fluid {
+  padding: 0px;
+}
+.row {
+  padding: 0px;
+  margin: 0px;
+}
+.container {
+  height: 100%;
+}
+.btn-primary {
+  background-color: #1581f5;
+}
+nav {
+  border-bottom: 4px #00a2e8 solid;
+  min-height: 85px;
+  max-height: 110px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 27px !important;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+}
+a {
+  color: rgb(71, 71, 71) !important;
+  text-decoration: none !important;
+}
+nav > div {
+  display: flex;
+  align-items: center;
+}
+nav > div:nth-child(2) {
+  justify-content: center;
+}
+nav > div:last-child {
+  justify-content: flex-end;
+}
+
+/* Profile Picture Container CSS */
+.pfp {
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+  cursor: pointer;
+  transition: ease-in-out 0.1s transform;
+}
+.pfp:hover {
+  transform: scale(1.05, 1.05);
+}
+.pfp > img {
+  width: 55px;
+  height: 55px;
+  border-radius: 60px;
+  border: 2px rgb(32, 32, 32) solid;
+}
+
+/* Menu Starts */
+#menu-bars {
+  transition: transform 0.2s linear;
+  cursor: pointer;
+}
+#menu-bars:hover {
+  transform: scale(1.13, 1.13);
+}
+
+/* Forms Logo [Login / Register] */
+.logo-form {
+  width: 150px;
+  display: flex;
+  align-items: center;
+}
+
+/* Form */
+.login-form {
+  background: transparent;
+  bottom: 10px;
+  color: #0095ff;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+  margin-top: 10px;
+}
+.form-log-reg {
+  width: 97%;
+}
+.form-control {
+  height: 45px;
+}
+
+.register-note {
+  position: relative;
+  top: 20px;
+}
+
+/* Alert Box */
+.warning-box {
+  position: fixed;
+  bottom: 57px;
+  left: 43px;
+  z-index: 21001;
+  color: #fa565c;
+  font-size: 20px;
+  font-weight: 600;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.8);
+  padding: 20px !important;
+  background-color: #fff;
+  border-radius: 2px;
+}
+.search-bar svg {
+  position: absolute;
+  right: 11px;
+  top: 12px;
+  transition: transform 0.1s ease-in-out;
+  cursor: pointer;
+}
+.search-bar svg:hover {
+  transform: scale(1.1, 1.1);
+}
+
+@media (max-width: 690px) {
+  .menu {
+    display: none;
+    min-width: 100% !important;
+    min-height: 100% !important;
+    border-right: none !important;
+    position: absolute;
+    z-index: 159387513857351986539185;
+    background-color: #fff;
+  }
+  .logo {
+    display: none;
+  }
+}

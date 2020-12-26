@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../frameworks/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../frameworks/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../frameworks/css/nav.css">
+    <link rel="stylesheet" href="../frameworks/css/menu.css">
+    <link rel="stylesheet" href="../frameworks/css/videos.css">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/dda5cbe6fd.js" crossorigin="anonymous"></script>
+
+    <title>VelixClips</title>
+</head>
+<body>
+    <!-- Including Nav Structure -->
+    <%- include('../../includes/nav.ejs') %>
+
+    <section class="row col-12 container">
+        <%- include('../../includes/menu.ejs') %>
+
+        <main class="col">
+            <div class="banner-container row" style="background-image: url('/imgs/banners/<%= channelBanner %>')">
+                <div>
+                    <div class="channel-info row col-12">
+                        <div class="channel-img">
+                             <img src="/imgs/avatar/<%= channelAvatar %>" alt="Profile Picture">
+                        </div>
+                        <div class="channel-name"> <%= channelName %> </div>
+                    </div>
+                </div>
+                <div class="col"></div>
+                <div class="channel-subs">
+                    <%= channelSubs %> Subscribers
+                </div>
+            </div>
+            
+            <!-- Channel Buttons row -->
+            <% if(status == "logged" && username !== channelName){ %>
+                <div class="row channel-buttons">
+                
+                    <button class="btn-primary btn" data-toggle="modal" data-target="#DonateModal">Donate</button>
+                    <form action="/channel/subscribe" method="POST">
+                        <input hidden id="channelName" name="channel" value="<%= channelID %>">
+                        <% if(user.subscribed.includes(channelID)){ %>
+                            <button class="btn-secondary btn" onclick="sendSub()">Subscribed</button>
+                        <% } else {%>
+                            <button class="btn-primary btn" onclick="sendSub()">Subscribe</button>
+                        <% } %>
+                    </form>
+                </div>
+           <% } else if (username == channelName){ %>
+            <div class="row channel-buttons">
+                <a href="/channel/settings"><button class="btn-primary btn" href="/" style="width: 90px;">Edit</button></a>
+            </div>
+            <% }%>
+            <!-- Videos -->
+            <div class="section-container" style="width: 94% !important;margin: 50px auto 50px auto">
+                <span class="section-title">Recent Videos</span>
+                <span class="section-content" id="recentVideos">
+                    <% if(channelVideos.length < 1){ %>
+                        <div class="row col-12" style="display: flex;justify-content: center;font-size: 18px;">
+                            This channel has no videos to display
+                        </div>
+                    <% } else { %>
+                        <% channelVideos.forEach(element => { %>
+                        
+                            <% var Videodate = new Date(element.published) %>
+                            <%const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(Videodate);%>
+                            <% const mo = new Intl.DateTimeFormat('en', { month: 'numeric' }).format(Videodate);%>
+                            <%  const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(Videodate);  %>
+                            <div class="col-12 col-sm-6 col-lg-3">
+                                <a href="/watch?viewKey=<%= element._id %>"class="col row"> <i class="fa fa-play" aria-hidden="true"></i> </a>
+                                <div class="video-title row col-12">
+                                    <a class="col" href="/watch?viewKey=<%= element._id %>" style="background-image: url('/data/<%= element.thumbnail %>')"> <%= element.title %></a>
+                                </div>
+                                <div class="video-description row col-12">
+                                    <div class="col">by <%= element.owner %></div>
+                                    <div class="col"><%= ye + "-" + mo + "-" + da %></div>
+                                </div>
+                            </div>
+                        <% })} %>
+                </span>
+            </div>
+
+            <div class="menu-line col-9"></div>
+
+            <div class="section-container" style="margin-top: 50px;width: 94% !important;margin: 30px auto">
+                <span class="section-title">Most Popular</span>
+                <span class="section-content">
+                    <% if(channelVideos.length < 1){ %>
+                        <div class="row col-12" style="display: flex;justify-content: center;font-size: 18px;">
+                            This channel has no videos to display
+                        </div>
+                    <% } else { %>
+                        <% var x = 0 %>
+                        <% channelVideos.forEach(element => { %>
+                            <% var Videodate = new Date(element.published) %>
+                            <%const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(Videodate);%>
+                            <% const mo = new Intl.DateTimeFormat('en', { month: 'numeric' }).format(Videodate);%>
+                            <%  const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(Videodate);  %>
+                                <div class="col-12 col-sm-6 col-lg-3">
+                                    <a href="/watch?viewKey=<%= element._id %>"class="col row"> <i class="fa fa-play" aria-hidden="true"></i> </a>
+                                    <div class="video-title row col-12">
+                                        <a class="col" href="/watch?viewKey=${
+                                          element._id
+                                        }"> <%= element.title %></a>
+                                    </div>
+                                    <div class="video-description row col-12">
+                                        <div class="col">by <%= element.owner %></div>
+                                        <div class="col"><%= ye + "-" + mo + "-" + da %></div>
+                                    </div>
+                                </div>
+                            
+                        <% })} %>
+                </span>
+            </div>               
+        </main>
+        <%- include('../../includes/footer.ejs') %>
+    </section>
+
+    
+    <!-- Modal [Donate]-->
+<div class="modal fade" id="DonateModal" tabindex="-1" role="dialog" aria-labelledby="donate" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 60%;">
+    <div class="modal-content">
+        <div class="modal-header">
+        <div class="modal-title" ><img class="logo-form" src="/imgs/logo.png" alt="Logo"></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <section class="row col-12 login-form" >
+               
+                <form action="/payment/pay" method="POST" class="form-log-reg">
+                    <input type="text" name="channel" min="0" max="200" value="<%= channelName  %>" hidden>
+                    <div class="form-group">
+                        <label for="amount">Amount</label>
+                        <input type="number" name="amount" class="form-control" required >
+                      </div>
+                      <div class="form-group">
+                        <label for="Email">Velix Email</label>
+                        <input type="text" name="email" class="form-control" required aria-describedby="email">
+                      </div>
+                      <div class="form-group">
+                        <label for="title">Message</label>
+                        <input type="text" name="message" required class="form-control"  placeholder="Message...">
+                      </div>
+            </section>
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Donate</button>
+        </div>
+    </form>
+    </div>
+    </div>
+    <input hidden value="<%= username %>">
+</div>
+</div>
+
+     
+    <script src='../frameworks/js/jquery-3.3.1.min.js'></script>
+    <script src='../frameworks/js/bootstrap.bundle.min.js'></script>
+    <script src='../frameworks/js/bootstrap.min.js'></script>
+    <script src='../frameworks/js/menu.js'></script>
+</body>
+
+</html>

@@ -1,0 +1,55 @@
+.menu {
+  border-right: 4px #00a2e8 solid;
+  padding: 10px;
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.3);
+  min-height: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  min-width: 200.5px;
+  display: none;
+  color: #242424 !important;
+}
+.menu > a {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  padding: 12px 10px 18px 10px;
+  transition: background-color 0.2s linear;
+  cursor: pointer;
+  color: #242424 !important;
+}
+/* Hovering */
+.menu > a:hover {
+  background-color: rgb(221, 221, 221);
+  color: #242424 !important;
+  text-decoration: none;
+}
+.icon {
+  padding-left: 5px;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+}
+/* Menu Title */
+.menu-title {
+  color: rgb(80, 80, 80);
+  font-size: 19px;
+  margin-left: 10px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+.menu-title > p {
+  margin-bottom: 7px;
+}
+
+/* Opening the Menu */
+.open-menu {
+  display: block !important;
+}
+
+/* Lines */
+.menu-line {
+  border-bottom: rgb(75, 75, 75) 1px solid;
+  margin: 17px auto;
+  position: relative;
+}

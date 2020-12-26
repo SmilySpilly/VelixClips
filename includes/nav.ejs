@@ -1,0 +1,155 @@
+<nav class="col-12 row">
+
+    <div class="row col-2 col-sm" style="font-size:35px">
+        <i class="fa fa-bars" id="menu-bars" aria-hidden="true"></i>
+        <img class="logo" style="width: 230px; margin-left: 25px;" src="/imgs/logo.png"  alt="Logo">
+    </div>
+    <div class="search-bar row col">
+        <div class="md-form mt-0" style="width: 100%;">
+            <svg id="search-button" xmlns="http://www.w3.org/2000/svg" width="21" height="21" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+                <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+              </svg>
+            <input class="form-control" style="width: 100%;" type="text" placeholder="Search"  id="search" aria-label="Search">
+          </div>
+    </div>
+    <div class="row col" style="display: flex; justify-content: flex-end;">
+
+        <% if(status == "logged"){ %>
+            <span class="uploadBtn">
+                <button class="btn-primary btn" data-toggle="modal" data-target="#UploadModal">Upload</button>
+            </span>
+            <% if(!avatar){ %>
+            <span class="pfp">
+                <img src="/imgs/avatar/acc.png" alt="">
+            </span>
+            <% } else {%>
+                <div class="btn-group dropleft pfp">
+                    <img src="/imgs/avatar/<%=avatar %>" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle" alt="">
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="/logout">Logout</a>
+                    </div>
+                    </div>
+            <% } %> 
+        <% } else {%>
+            <span class="log-btns"">
+                <button class="btn-primary btn" data-toggle="modal" data-target="#LoginModal">Login</button>
+                <button class="btn-secondary btn" data-toggle="modal" data-target="#registerModal">Register</button>
+            </span>
+        <% } %>
+        
+    </div>
+
+    <!-- Modal [Register]-->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registering" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <div class="modal-title" ><img class="logo-form" src="/imgs/logo.png" alt="Logo"></div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            
+
+                <section class="row col-12 login-form">
+                   
+                    <form action="/register" method="POST" class="form-log-reg">
+                      <div class="form-group">
+                        <input type="text" name="username" class="form-control" required aria-describedby="username" placeholder="Username">
+                      </div>
+                        <div class="form-group">
+                          <input type="email" name="email" class="form-control" required aria-describedby="email" placeholder="Email">
+                          <small  class="form-text text-muted">We'll never share your email with anyone else.</small>
+                        </div>
+                        <div class="form-group">
+                          <input type="password" name="password" class="form-control" required placeholder="Password">
+                        </div>
+                      
+                </section>
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
+</div>
+    <!-- Modal [Login]-->
+    <div class="modal fade" id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="logging" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <div class="modal-title" ><img class="logo-form" src="/imgs/logo.png" alt="Logo"></div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <section class="row col-12 login-form" >
+                   
+                    <form action="/login" method="POST" class="form-log-reg">
+                        <div class="form-group">
+                            <input type="email" name="email" class="form-control" required aria-describedby="email" placeholder="Email">
+                          </div>
+                          <div class="form-group">
+                            <input type="password" name="password" required class="form-control"  placeholder="Password">
+                          </div>
+                      
+                </section>
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal [Upload]-->
+<div class="modal fade" id="UploadModal" tabindex="-1" role="dialog" aria-labelledby="logging" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 60%;">
+    <div class="modal-content">
+        <div class="modal-header">
+        <div class="modal-title" ><img class="logo-form" src="/imgs/logo.png" alt="Logo"></div>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        </div>
+        <div class="modal-body">
+            <section class="row col-12 login-form" >
+               
+                <form action="/upload" method="POST" class="form-log-reg" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="video">Video</label>
+                        <input type="file" name="video" class="form-control" required  accept="video/*">
+                      </div>
+                      <div class="form-group">
+                        <label for="Thumbnail">Thumbnail</label>
+                        <input type="file" name="thumbnail" class="form-control" accept="image/*">
+                      </div>
+                      <div class="form-group">
+                        <label for="title">Title</label>
+                        <input type="text" name="title" required class="form-control"  placeholder="Title...">
+                      </div>
+                      <div class="form-group">
+                        <label for="Description">Description</label>
+                        <textarea type="text" name="description" class="form-control"  placeholder="Title..."></textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="Tags">Tags</label>
+                        <input type="text" name="tags" class="form-control"  placeholder="E.g: Games Comedy Minecraft">
+                      </div>
+                  
+            </section>
+        <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Upload</button>
+        </div>
+    </form>
+    </div>
+    </div>
+</div>
+</div>
+
+</nav>

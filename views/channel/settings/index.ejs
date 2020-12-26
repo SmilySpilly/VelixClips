@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../../frameworks/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../frameworks/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../../frameworks/css/nav.css">
+    <link rel="stylesheet" href="../../frameworks/css/menu.css">
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/dda5cbe6fd.js" crossorigin="anonymous"></script>
+
+    <title>VelixClips</title>
+</head>
+<body>
+    <!-- Including Nav Structure -->
+    <%- include('../../../includes/nav.ejs') %>
+
+    <section class="row col-12 container">
+        <%- include('../../../includes/menu.ejs') %>
+
+        <main class="col">
+            <div class="banner-container row" style="background-image: url('/imgs/avatar/<%= user.banner %>')">
+                <span class="change-banner-overlay" data-toggle="modal" data-target="#editingBanner">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </span>
+                <div class="row col">
+                    <div class="channel-info row col-12">
+                        <div class="channel-img">
+                            <img src="/imgs/avatar/<%= user.avatar %>" alt="Profile Picture">
+                            <button class="layout-shadow" data-toggle="modal" data-target="#editingImages">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+
+            <section style="width: 96%; margin: auto 50px 110px 50px; ">
+                <p class="section-title" style="margin-bottom: 29px;">Channel Statics</p>
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Username</label>
+                <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" value="<%= user.username %>">
+                </div>
+            </div>
+            <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="<%= user.email %>"> 
+            </div>
+            </div>
+            <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-5" style="display: flex;">
+                <input type="password" readonly class="form-control-plaintext col-10" id="inputPassword" placeholder="Password" value="<%= user.password %>">
+                
+            </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Paypal</label>
+                <div class="col-sm-5" style="display: flex;">
+                    <input type="email" readonly class="form-control-plaintext col-10" id="inputPassword" placeholder="No Account" value="<%= user.paypal %>">
+                    
+                </div>
+            </div>
+
+            <button class="btn btn-primary col-1" data-toggle="modal" data-target="#editingProfile" style="float: right;margin-bottom: 80px;position: relative;right: 20px;">Edit</button>
+
+            <div class="channel-settings" >
+                <div class="row col-12">
+                    <div class="col col-md-6">
+                        <h5 class="titles">Content Creator Fund Program</h5>
+                        <span class="entity col-12 row">
+                            Active:
+                            <% if(user.CCFProgram === false){ var Programcolor="#FF4C52"; var CCFProgram = "False"} else {var Programcolor="#11C26D"; var CCFProgram = "True"} %> 
+                            <span style="margin-left: 3px;font-weight:500;color:<%= Programcolor %>">  
+                                 <%= CCFProgram %>
+                            </span>
+                        </span>
+                        <span class="entity col-12 row">Earned Income: <%= user.income %>.00$</span>
+                        <span class="entity col-12 row">Wallet: <%= user.wallet %>.00$</span>
+                    </div>
+                    <div class="col col-md-6">
+                        <h5 class="titles">Copyright Strikes</h5>
+                        <span class="entity">
+                            Status: 
+                            <span>
+                                You Currently have <%= user.strikes %> Copyright strikes!                         
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row col-12">
+                <div class="col col-md-6">
+                    <h5 class="titles">Keywords</h5>
+                    <form>
+                        <div class="form-group">
+                        <input type="text" disabled class="form-control col col-md-7" placeholder="Currently Disabled">
+                        </div>
+                    </form>
+                </div>
+                <div class="col col-md-6">
+                    <h5 class="titles">Analytics</h5>
+                    <span class="entity col-12 row">Subscribers: <span style="margin-left: 2px;"> <%= user.subscribers %></span></span>
+                    <span class="entity col-12 row">Views: <span style="margin-left: 2px;"> <%= user.views %></span></span>
+                </div>
+            </div>
+            </div>
+        </section>
+        </main>
+    </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editingProfile" tabindex="-1" role="dialog" aria-labelledby="editing" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Channel Info</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            
+            <form action="/channel/settings" method="POST" autocomplete="off">
+                <div class="form-group">
+                  <input type="text" class="form-control" name="username" placeholder="Username" value="<%= user.username %>">
+                 </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="oldPass" placeholder="Old Password" value="">
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" name="newPass" placeholder="New Password">
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" name="paypal" placeholder="Paypal Account">
+                </div>
+                
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" class="btn btn-primary" value="Save Changes">
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
+
+    <!-- Modal Profile Picture  -->
+    <div class="modal fade" id="editingImages" tabindex="-1" role="dialog" aria-labelledby="editing" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Channel picture</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            
+            <form action="/channel/settings/upload-imgs" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="pfp">Channel picture</label>
+                    <input type="file" class="form-control" name="channelPicture" accept="image/*">
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" class="btn btn-primary" value="Save Changes">
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
+
+      <!-- Modal Channel Banner -->
+      <div class="modal fade" id="editingBanner" tabindex="-1" role="dialog" aria-labelledby="editing" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Channel banner</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            
+            <form action="/channel/settings/upload-banner" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="banner" style="color: rgb(87, 87, 87);">Note: 1300x300</label>
+                    <input type="file" class="form-control" name="channelBanner" accept="image/*">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <input type="submit" class="btn btn-primary" value="Save Changes">
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
+    
+    <%- include('../../../includes/footer.ejs') %>
+    <script src='../../frameworks/js/jquery-3.3.1.min.js'></script>
+    <script src='../../frameworks/js/bootstrap.bundle.min.js'></script>
+    <script src='../../frameworks/js/bootstrap.min.js'></script>
+    <script src='../../frameworks/js/menu.js'></script>
+</body>
+</html>

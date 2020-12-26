@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="../frameworks/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../frameworks/css/bootstrap-grid.min.css" />
+    <link rel="stylesheet" href="../frameworks/css/nav.css" />
+    <link rel="stylesheet" href="../frameworks/css/menu.css" />
+    <link rel="stylesheet" href="../frameworks/css/videos.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      src="https://kit.fontawesome.com/dda5cbe6fd.js"
+      crossorigin="anonymous"
+    ></script>
+
+    <title>VelixClips</title>
+  </head>
+  <body>
+    <!-- Including Nav Structure -->
+    <%- include('../../includes/nav.ejs') %>
+
+    <section class="row col-12 container">
+      <%- include('../../includes/menu.ejs') %>
+
+      <main class="col">
+        <div class="section-container">
+          <span class="section-title"
+            >Search: "<font style="font-weight: normal; font-size: 19px"
+              ><%= query %></font
+            >"</span
+          >
+          <span class="section-content" id="videos">
+            <% if(videos.length > 0){ %> <% videos.forEach((element) => { %> <%
+            var Videodate = new Date(element.published) %> <%const ye = new
+            Intl.DateTimeFormat('en', { year: 'numeric' }).format(Videodate);%>
+            <% const mo = new Intl.DateTimeFormat('en', { month: 'numeric'
+            }).format(Videodate);%> <% const da = new Intl.DateTimeFormat('en',
+            { day: '2-digit' }).format(Videodate); %>
+            <div class="col-12 col-sm-6 col-lg-3">
+              <a
+                href="/watch?viewKey=<%= element._id %>"
+                class="col row"
+                style="background-image: url('/data/<%= element.thumbnail %>')"
+              >
+                <i class="fa fa-play" aria-hidden="true"></i>
+              </a>
+              <div class="video-title row col-12">
+                <a
+                  class="col"
+                  href="/watch?viewKey=
+                          <%= element._id %>
+                        "
+                >
+                  <%= element.title %></a
+                >
+              </div>
+              <div class="video-description row col-12">
+                <div class="col">by <%= element.owner %></div>
+                <div class="col"><%= ye + "-" + mo + "-" + da %></div>
+              </div>
+            </div>
+
+            <% }) %> <% } else { %>
+            <p>There is nothing to display, please try a different query!</p>
+            <% } %>
+          </span>
+        </div>
+      </main>
+    </section>
+
+    <%- include('../../includes/footer.ejs') %>
+    <script src="../frameworks/js/jquery-3.3.1.min.js"></script>
+    <script src="../frameworks/js/bootstrap.bundle.min.js"></script>
+    <script src="../frameworks/js/bootstrap.min.js"></script>
+    <script src="../frameworks/js/menu.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

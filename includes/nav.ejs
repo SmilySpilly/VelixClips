@@ -16,6 +16,7 @@
     <div class="row col" style="display: flex; justify-content: flex-end;">
 
         <% if(status == "logged"){ %>
+            <input type="text" id="ID" hidden disabled value="<%=username%>">
             <span class="uploadBtn">
                 <button class="btn-primary btn" data-toggle="modal" data-target="#UploadModal">Upload</button>
             </span>
@@ -143,8 +144,11 @@
                       </div>
                   
             </section>
-        <div class="modal-footer">
-        <button type="submit" class="btn btn-primary">Upload</button>
+        <div class="modal-footer" style="display: flex;justify-content: space-between;">
+            <div class="col">
+               <font class="status-text" style="color:#fd7d2d;display: none;">Uploading...</font>
+            </div>
+            <button type="btn" class="uploadbtn btn btn-primary" style="float: right;">Upload</button>
         </div>
     </form>
     </div>

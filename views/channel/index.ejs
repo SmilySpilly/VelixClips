@@ -25,7 +25,7 @@
         <%- include('../../includes/menu.ejs') %>
 
         <main class="col">
-            <div class="banner-container row" style="background-image: url('/imgs/banners/<%= channelBanner %>')">
+            <div class="banner-container row" style="background-image: url('/imgs/avatar/<%= channelBanner %>')">
                 <div>
                     <div class="channel-info row col-12">
                         <div class="channel-img">
@@ -74,10 +74,12 @@
                             <%const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(Videodate);%>
                             <% const mo = new Intl.DateTimeFormat('en', { month: 'numeric' }).format(Videodate);%>
                             <%  const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(Videodate);  %>
-                            <div class="col-12 col-sm-6 col-lg-3">
-                                <a href="/watch?viewKey=<%= element._id %>"class="col row"> <i class="fa fa-play" aria-hidden="true"></i> </a>
+                            <div class="video-element">
+                                <a href="/watch?viewKey=<%= element._id %>" class="col row thumbnail" style="background-image: url('/data/<%= element.thumbnail %>')"> <i class="fa fa-play" aria-hidden="true"></i> </a>
                                 <div class="video-title row col-12">
-                                    <a class="col" href="/watch?viewKey=<%= element._id %>" style="background-image: url('/data/<%= element.thumbnail %>')"> <%= element.title %></a>
+                                    <a class="col" href="/watch?viewKey=${
+                                      element._id
+                                    }"> <%= element.title %></a>
                                 </div>
                                 <div class="video-description row col-12">
                                     <div class="col">by <%= element.owner %></div>
@@ -104,24 +106,23 @@
                             <%const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(Videodate);%>
                             <% const mo = new Intl.DateTimeFormat('en', { month: 'numeric' }).format(Videodate);%>
                             <%  const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(Videodate);  %>
-                                <div class="col-12 col-sm-6 col-lg-3">
-                                    <a href="/watch?viewKey=<%= element._id %>"class="col row"> <i class="fa fa-play" aria-hidden="true"></i> </a>
-                                    <div class="video-title row col-12">
-                                        <a class="col" href="/watch?viewKey=${
-                                          element._id
-                                        }"> <%= element.title %></a>
-                                    </div>
-                                    <div class="video-description row col-12">
-                                        <div class="col">by <%= element.owner %></div>
-                                        <div class="col"><%= ye + "-" + mo + "-" + da %></div>
-                                    </div>
+                            <div class="video-element">
+                                <a href="/watch?viewKey=<%= element._id %>" class="col row thumbnail" style="background-image: url('/data/<%= element.thumbnail %>')"> <i class="fa fa-play" aria-hidden="true"></i> </a>
+                                <div class="video-title row col-12">
+                                    <a class="col" href="/watch?viewKey=${
+                                      element._id
+                                    }"> <%= element.title %></a>
                                 </div>
-                            
+                                <div class="video-description row col-12">
+                                    <div class="col">by <%= element.owner %></div>
+                                    <div class="col"><%= ye + "-" + mo + "-" + da %></div>
+                                </div>
+                            </div>
                         <% })} %>
                 </span>
             </div>               
         </main>
-        <%- include('../../includes/footer.ejs') %>
+        <%# include('../../includes/footer.ejs') %>
     </section>
 
     

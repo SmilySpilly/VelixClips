@@ -44,29 +44,18 @@
             <% const mo = new Intl.DateTimeFormat('en', { month: 'numeric'
             }).format(Videodate);%> <% const da = new Intl.DateTimeFormat('en',
             { day: '2-digit' }).format(Videodate); %>
-            <div class="col-12 col-sm-6 col-lg-3">
-              <a
-                href="/watch?viewKey=<%= element._id %>"
-                class="col row"
-                style="background-image: url('/data/<%= element.thumbnail %>')"
-              >
-                <i class="fa fa-play" aria-hidden="true"></i>
-              </a>
+            <div class="video-element">
+              <a href="/watch?viewKey=<%= element._id %>" class="col row thumbnail" style="background-image: url('/data/<%= element.thumbnail %>')"> <i class="fa fa-play" aria-hidden="true"></i> </a>
               <div class="video-title row col-12">
-                <a
-                  class="col"
-                  href="/watch?viewKey=
-                          <%= element._id %>
-                        "
-                >
-                  <%= element.title %></a
-                >
+                  <a class="col" href="/watch?viewKey=${
+                    element._id
+                  }"> <%= element.title %></a>
               </div>
               <div class="video-description row col-12">
-                <div class="col">by <%= element.owner %></div>
-                <div class="col"><%= ye + "-" + mo + "-" + da %></div>
+                  <div class="col">by <%= element.owner %></div>
+                  <div class="col"><%= ye + "-" + mo + "-" + da %></div>
               </div>
-            </div>
+          </div>
 
             <% }) %> <% } else { %>
             <p>There is nothing to display, please try a different query!</p>
@@ -76,7 +65,7 @@
       </main>
     </section>
 
-    <%- include('../../includes/footer.ejs') %>
+    <%# include('../../includes/footer.ejs') %>
     <script src="../frameworks/js/jquery-3.3.1.min.js"></script>
     <script src="../frameworks/js/bootstrap.bundle.min.js"></script>
     <script src="../frameworks/js/bootstrap.min.js"></script>

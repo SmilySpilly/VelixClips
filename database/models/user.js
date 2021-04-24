@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema({
   wallet: { type: Number, require: false, default: 0 },
   lastChanged: { type: Date, require: false, default: Date.now },
   createdAt: { type: Date, require: false, default: Date.now },
+  notifications: {type: Boolean, default: false}
 });
 
 const User = (module.exports = mongoose.model("User", UserSchema));

@@ -8,6 +8,7 @@
   min-width: 200.5px;
   display: none;
   color: #242424 !important;
+  max-width: 300px;
 }
 .menu > a {
   display: flex;

@@ -31,11 +31,11 @@
   top: 20px;
 }
 .channel-img {
-  background-color: #eee;
   transition: transform 0.1s linear;
   cursor: pointer;
   bottom: 5px;
   overflow: hidden;
+  background: transparent;
 }
 .channel-img:hover {
   transform: scale(1.05, 1.05);

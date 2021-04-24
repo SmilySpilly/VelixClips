@@ -22,20 +22,22 @@ $(document).ready(function () {
 
           document.getElementById(
             "recommended-videos"
-          ).innerHTML += `<div class="col-12 col-sm-6 col-lg-3">
-                        <a href="/watch?viewKey=${
-                          element._id
-                        }" class="col row"> <i class="fa fa-play" aria-hidden="true"></i> </a>
-                        <div class="video-title row col-12">
-                            <a class="col" href="/watch?viewKey=${
-                              element._id
-                            }"> ${element.title}</a>
-                        </div>
-                        <div class="video-description row col-12">
-                            <div class="col">by ${element.owner}</div>
-                            <div class="col">${ye + "-" + mo + "-" + da}</div>
-                        </div>
-                    </div>`;
+          ).innerHTML +=  `<div class="video-element">
+          <a href="/watch?viewKey=${
+            element._id
+          }" class="col row thumbnail" style="background-image: url('/data/${
+element.thumbnail
+}')"> <i class="fa fa-play" aria-hidden="true"></i> </a>
+          <div class="video-title row col-12">
+              <a class="col" href="/watch?viewKey=${
+                element._id
+              }"> ${element.title}</a>
+          </div>
+          <div class="video-description row col-12">
+              <div class="col">by ${element.owner}</div>
+              <div class="col">${ye + "-" + mo + "-" + da}</div>
+          </div>
+      </div>`;
         });
       }
     },
@@ -64,12 +66,12 @@ $(document).ready(function () {
 
           document.getElementById(
             "recent-videos"
-          ).innerHTML += `<div class="col-12 col-sm-6 col-lg-3">
+          ).innerHTML += `<div class="video-element">
                         <a href="/watch?viewKey=${
                           element._id
-                        }" class="col row" style="background-image: url('/data/${
+                        }" class="col row thumbnail" style="background-image: url('/data/${
             element.thumbnail
-          }')> <i class="fa fa-play" aria-hidden="true"></i> </a>
+          }')"> <i class="fa fa-play" aria-hidden="true"></i> </a>
                         <div class="video-title row col-12">
                             <a class="col" href="/watch?viewKey=${
                               element._id

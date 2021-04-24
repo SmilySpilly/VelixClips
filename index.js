@@ -774,6 +774,9 @@ app.post("/channel/subscribe", (req, res) => {
 app.post("/upload", (req, res) => {
   if (req.session.user) {
     UserModel.findById(req.session.user, (request, result) => {
+
+      UserModel.updateOne({_id: result._id}, {notifications: true}, (req, resUpdate) => {})
+
       const storage = multer.diskStorage({
         destination: "./public/data/",
         filename: function (req, file, callback) {
@@ -793,9 +796,7 @@ app.post("/upload", (req, res) => {
           throw err;
         } else {
           let video = req.files.video[0].filename;
-          if (req.files.video) {
-            video = req.files.thumbnail[0].filename;
-          }
+
           let thumbnail = "";
           if (req.files.thumbnail) {
             thumbnail = req.files.thumbnail[0].filename;
@@ -821,15 +822,33 @@ app.post("/upload", (req, res) => {
             description,
           });
 
-          newVideo.save();
+          newVideo.save().then(
+            console.log("DONE")
+          );
           res.redirect("/");
         }
-      });
+      })
     });
   } else {
     res.redirect("/?alert=Please login to upload!");
   }
 });
+
+// CHECK IF VIDEO HAS BEEN UPLOADED
+app.post("/checkVideo", (req,res) => {
+    var user = req.body.user  
+    console.log(user)
+
+    UserModel.find({username: user}, (req,result) => {
+      if(result[0].notifications === true) {
+        res.send({success: true, msg: "Successfully Uploaded!"})
+
+        UserModel.updateOne({_id: result[0]._id}, {notifications: false}, (req, resUpdate) => {})
+      } else {
+        res.send({success: false, msg: "Uploading..."})
+      }
+    })
+})
 
 // ==================
 // Search Engine

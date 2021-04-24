@@ -99,7 +99,37 @@
 }
 
 /* Thumbnail*/
+.thumbnail{
+  background-size: cover;
+  min-width: 359.98px;
+  min-height: 201.98px ;
+}
 .thumbnail-area {
   background-size: auto;
   background-clip: border-box;
+}
+
+/* Video Element */
+.video-element{
+  min-width: 359.98px ;
+  margin-right: 20px;
+}
+
+@media (max-width: 690px) {
+  /* Thumbnail*/
+  .thumbnail{
+    background-size: cover;
+    min-width: 100% !important;
+    min-height: 281.98px !important;
+  }
+  
+  .section-content{
+    justify-content: center !important;
+    flex-direction: column !important;
+  }
+  /* Video Element */
+  .video-element{
+    min-width: 100% !important;
+    margin-bottom: 25px;
+  }
 }

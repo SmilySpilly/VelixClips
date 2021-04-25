@@ -538,62 +538,111 @@ app.get("/catagory", (req, res) => {
         return "out";
       }
     }
-    function checkAvatar() {
+
       if (req.session.user) {
         UserModel.findById(req.session.user, (req, result) => {
-          return result.avatar;
+
+          if (query == "gaming") {
+            VideoModel.find({ tags: "Gaming" })
+              .sort({ published: -1 })
+              .exec((req, result) => {
+                res.render("catagory/index", {
+                  title: "Gaming",
+                  result,
+                  status: checkUser(),
+                  avatar: result.avatar,
+                  username: result.username
+                });
+              });
+          } else if (query == "comedy") {
+            VideoModel.find({ tags: "Comedy" })
+              .sort({ published: -1 })
+              .exec((req, result) => {
+                res.render("catagory/index", {
+                  title: "Comedy",
+                  result,
+                  status: checkUser(),
+                  avatar: result.avatar,
+                  username: result.username
+                });
+              });
+          } else if (query == "vlogs") {
+            VideoModel.find({ tags: "Vlogs" })
+              .sort({ published: -1 })
+              .exec((req, result) => {
+                res.render("catagory/index", {
+                  title: "Vlogs",
+                  result,
+                  status: checkUser(),
+                  avatar: result.avatar,
+                  username: result.username
+                });
+              });
+          } else if (query == "academy") {
+            VideoModel.find({ tags: "Academy" })
+              .sort({ published: -1 })
+              .exec((req, result) => {
+                res.render("catagory/index", {
+                  title: "Academy",
+                  result,
+                  status: checkUser(),
+                  avatar: result.avatar,
+                  username: result.username
+                });
+              });
+          }
+
         });
       } else {
-        return;
-      }
-    }
+        if (query == "gaming") {
+          VideoModel.find({ tags: "Gaming" })
+            .sort({ published: -1 })
+            .exec((req, result) => {
+              res.render("catagory/index", {
+                title: "Gaming",
+                result,
+                status: checkUser(),
+                avatar
+              });
+            });
+        } else if (query == "comedy") {
+          VideoModel.find({ tags: "Comedy" })
+            .sort({ published: -1 })
+            .exec((req, result) => {
+              res.render("catagory/index", {
+                title: "Comedy",
+                result,
+                status: checkUser(),
+                avatar,
+              });
+            });
+        } else if (query == "vlogs") {
+          VideoModel.find({ tags: "Vlogs" })
+            .sort({ published: -1 })
+            .exec((req, result) => {
+              res.render("catagory/index", {
+                title: "Vlogs",
+                result,
+                status: checkUser(),
+                avatar,
+              });
+            });
+        } else if (query == "academy") {
+          VideoModel.find({ tags: "Academy" })
+            .sort({ published: -1 })
+            .exec((req, result) => {
+              res.render("catagory/index", {
+                title: "Academy",
+                result,
+                status: checkUser(),
+                avatar,
+              });
+            });
+        }
 
-    if (query == "gaming") {
-      VideoModel.find({ tags: "Gaming" })
-        .sort({ published: -1 })
-        .exec((req, result) => {
-          res.render("catagory/index", {
-            title: "Gaming",
-            result,
-            status: checkUser(),
-            avatar: checkAvatar(),
-          });
-        });
-    } else if (query == "comedy") {
-      VideoModel.find({ tags: "Comedy" })
-        .sort({ published: -1 })
-        .exec((req, result) => {
-          res.render("catagory/index", {
-            title: "Comedy",
-            result,
-            status: checkUser(),
-            avatar: checkAvatar(),
-          });
-        });
-    } else if (query == "vlogs") {
-      VideoModel.find({ tags: "Vlogs" })
-        .sort({ published: -1 })
-        .exec((req, result) => {
-          res.render("catagory/index", {
-            title: "Vlogs",
-            result,
-            status: checkUser(),
-            avatar: checkAvatar(),
-          });
-        });
-    } else if (query == "academy") {
-      VideoModel.find({ tags: "Academy" })
-        .sort({ published: -1 })
-        .exec((req, result) => {
-          res.render("catagory/index", {
-            title: "Academy",
-            result,
-            status: checkUser(),
-            avatar: checkAvatar(),
-          });
-        });
+      }
+
     }
-  }
 });
 
 // New Reaction
@@ -866,6 +915,7 @@ app.get("/search", (req, res) => {
             res.render("search/index", {
               status: "logged",
               avatar: result.avatar,
+              username: result.username,
               query,
               videos,
             });

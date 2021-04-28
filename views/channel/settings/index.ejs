@@ -87,7 +87,10 @@
                         <span class="entity col-12 row">Wallet: <%= user.wallet %>.00$</span>
                     </div>
                     <div class="col col-md-6">
-                        <h5 class="titles">Copyright Strikes</h5>
+                        <h5 class="titles" style="display: flex;">
+                            <p>Copyright Strikes</p>
+                            <p><button class="btn btn-primary" data-toggle="modal" data-target="#applyingForCCfProgram">Apply</button></p>
+                         </h5>
                         <span class="entity">
                             Status: 
                             <span>
@@ -207,11 +210,61 @@
         </div>
         </div>
     </div>
+    <div class="modal fade" id="applyingForCCfProgram" tabindex="-1" role="dialog" aria-labelledby="editing" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">CCF Program Application</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            
+            <form > <!-- SENT WITH AJAX VIA JQUERY / MAIN.JS-->
+                <div class="form-group">
+                    <label style="color: rgb(87, 87, 87);">Legal Name:</label>
+                    <input type="text" class="form-control" name="nameA">
+                    <label style="color: rgb(87, 87, 87);">Birthday:</label>
+                    <input type="text" class="form-control" name="birthday">
+                    <label style="color: rgb(87, 87, 87);">Country:</label>
+                    <input type="text" class="form-control" name="countryA">
+                    <label style="color: rgb(87, 87, 87);">Paypal Email:</label>
+                    <input type="text" class="form-control" name="paypalA">
+                    <div class="col checkbox-container" style="margin-top: 15px !important;">
+                        <label class="order-1" style="color: rgb(87, 87, 87);">Do you understand that you must have $100 minimum in order to get a payment?</label>
+                        <input type="checkbox" class="form-control" name="check1">
+                    </div>
+                    <div class="col checkbox-container">
+                        <label class="order-1" style="color: rgb(87, 87, 87);">If we find there is false information, we can suspend/terminate your channel?</label>
+                        <input type="checkbox" class="form-control" name="check2">
+                    </div>
+                    <div class="invalid-feedback">
+                        Please make sure all inputs are filled!
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="display: flex;">
+                <div class="col-7 appStatus" style="font-weight: bold;">
+                    
+                </div>
+                <div class="col" style="display: flex;">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="applyBtn" style="margin: 0px 10px;">Apply</button>
+                </div>
+            </div>
+        </form>
+        </div>
+        </div>
+    </div>
+
+
     
     <%# include('../../../includes/footer.ejs') %>
     <script src='../../frameworks/js/jquery-3.3.1.min.js'></script>
     <script src='../../frameworks/js/bootstrap.bundle.min.js'></script>
     <script src='../../frameworks/js/bootstrap.min.js'></script>
     <script src='../../frameworks/js/menu.js'></script>
+    <script src='./main.js'></script>
 </body>
 </html>

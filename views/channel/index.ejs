@@ -77,9 +77,10 @@
                             <div class="video-element">
                                 <a href="/watch?viewKey=<%= element._id %>" class="col row thumbnail" style="background-image: url('/data/<%= element.thumbnail %>')"> <i class="fa fa-play" aria-hidden="true"></i> </a>
                                 <div class="video-title row col-12">
-                                    <a class="col" href="/watch?viewKey=${
-                                      element._id
-                                    }"> <%= element.title %></a>
+                                    <a class="col" href="/watch?viewKey=<%= element._id %>"> <%= element.title %></a>
+                                    <a class="video-delete-icon col" href="/declineVideo/<%= element._id %>" >
+                                        Delete
+                                    </a>
                                 </div>
                                 <div class="video-description row col-12">
                                     <div class="col">by <%= element.owner %></div>

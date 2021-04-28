@@ -132,3 +132,34 @@
 form > input {
   padding-left: 10px !important;
 }
+
+.titles{
+  display: flex;
+  justify-content: space-between;
+}
+.titles button{
+  border-radius: 0;
+  max-height: 30px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.invalid-feedback{
+  color: #FF4C52 !important;
+  display: none;
+}
+/* Checkbox Container */
+.checkbox-container{
+  display: flex;
+  align-items: flex-start;
+  padding: 0 !important;
+}
+.checkbox-container > label{
+  padding-top: 5px;
+
+}
+.checkbox-container input{
+  width: 30px !important;
+  margin-right: 8px !important;
+}

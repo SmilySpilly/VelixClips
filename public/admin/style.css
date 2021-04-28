@@ -1,0 +1,211 @@
+html{
+  height: auto;
+}
+body {
+  height: auto;
+  background-color: #F1F4F5 !important;
+  display: flex;
+  justify-content: center;
+  float: none;
+}
+
+/* Title block */
+.title-block{
+  min-height: 75.81px;
+  max-height: 75.81px;
+  display: flex;
+  position: relative;
+  background-color: white;
+  box-shadow: 0 4px 2px -2px rgb(0 0 0 / 6%);
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 25px;
+  font-weight: 600;
+  font-size: 17px;
+  color: #3C4146;
+}
+
+.main-container{
+  padding: 0 !important;
+}
+.overview-container{
+  display: flex;
+  height: auto;
+  padding: 10px;
+}
+.overview-container .card{
+  padding: 30px 0px !important;
+  height: 145px;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 6%);
+  border: none;
+}
+
+.stats-card-title, .stats-card-value{
+  text-align: center;
+}
+.stats-card-title{
+  max-height: 22px;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.571429;
+  color: #76838f;
+  font-family: Roboto,sans-serif;
+  padding: 0 !important;
+}
+.stats-card-value{
+  max-height: 63px;
+  font-size: 38px;
+  font-family: Roboto,sans-serif;
+  color: #4294FF;
+  padding-top: 5px;
+}
+
+/* Charts */
+.details-content, .chart-box .chart-container{
+  box-shadow: 0 8px 20px rgb(0 0 0 / 6%);
+  background-color: white;
+  min-height: 100px;
+  max-height: 100%;
+}
+.chart-legends{
+  color: #4B4B5A;
+  padding: 12px 15px 20px 6px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* table */
+.details-content, .table-box .table-container{
+  box-shadow: 0 8px 20px rgb(0 0 0 / 6%);
+  background-color: white;
+  min-height: 100px;
+  max-height: 100%;
+  padding: 0;
+  min-height: 431px;
+  overflow: auto;
+}
+.table-legends{
+  color: #4B4B5A;
+  padding: 14px 20px 14px 20px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16.5px;
+  font-weight: 600;
+  border-bottom: 1px solid #eeeded !important;;
+}
+.table-legends span {
+  padding: 0;
+}
+
+.table-element{
+  padding: 12px 20px 12px 20px !important;
+  display: flex;
+  border-bottom: 1px solid #eeeded !important;;
+}
+.table-element-options{
+  display: flex;
+}
+.table-element-options button {
+  outline: none;
+  margin: 0px 6px 0px 0px ;
+  border: none;
+  border-radius: 2px;
+  padding: 5px 8px;
+  font-weight: 500;
+  color: white;
+  transition: background-color 0.2s ease-in-out;
+}
+.table-element-options-decline{
+  background-color: #FF4C52;
+}
+.table-element-options-decline:hover{
+  background-color: #fc5a60;
+}
+
+.table-element-options-accept{
+  background-color: #11C26D;
+}
+.table-element-options-accept:hover{
+  background-color: #12cf74;
+}
+
+.table-element-options-description{
+  background-color: #367CFD;
+}
+.table-element-options-description:hover{
+  background-color: #4294FF;
+}
+/* Details */
+.details-content{
+  padding: 10px 6px !important;
+}
+.details-element{
+  color: #4B4B5A;
+  padding: 0 !important;
+}
+.details-title{
+  margin-bottom: 10px;
+}
+.details-element-title{
+  font-weight: 600;
+  padding-top: 15px;
+  padding-bottom: 5px;
+}
+.details-element-value{
+  text-align: end;
+  font-weight: 600;
+  padding-bottom: 15px;
+  padding-top: 5px;
+}
+
+/* modals */
+.custom-modal-footer button{
+  border-radius: 0;
+  margin-left: 5px !important;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+/* Pagination */
+.table-box{
+  margin-bottom: 20px;
+}
+.pan-bar{
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px 17px 4px 10px !important;
+}
+.page-link{
+  padding: 4px 14px !important;
+}
+.active-page-link{
+  background-color: #4294FF !important;
+  color: white !important;
+}
+
+.table-element{
+  cursor: pointer;
+  transition: background-color ease-in-out 0.2s;
+}
+.table-element:hover{
+  background-color: #eee;
+}
+/* Lines */
+.mid-line{
+  border-bottom: 1px solid #eeeded !important;;
+  margin: 5px 0px;
+}
+
+@media (max-width: 768px){
+  .details-container{
+      margin-top: 17px;
+  }
+  .chart-box, .table-box, .overview-container{
+      margin-right: auto !important;
+      margin-left: auto !important;
+  }
+}

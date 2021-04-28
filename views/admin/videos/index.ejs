@@ -1,0 +1,119 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Pragma" content="no-cache">
+
+    <link rel="stylesheet" href="../../frameworks/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../frameworks/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../../frameworks/css/nav.css">
+    <link rel="stylesheet" href="../../frameworks/css/menu.css">
+    <link rel="stylesheet" href="../../frameworks/css/videos.css">
+    <link rel="stylesheet" href="../../frameworks/css/adminNav.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <script src='../frameworks/js/jquery-3.3.1.min.js'></script>
+    <script src="https://kit.fontawesome.com/dda5cbe6fd.js" crossorigin="anonymous"></script>
+    <title>VelixClips | Admin</title>
+  </head>
+  <body>
+
+    <%- include('../../../includes/adminNav.ejs') %>
+
+    <div class="main-container col">
+      <div class="title-block">
+        <div>
+          Admin Panel
+        </div>
+        <div>
+          Signed in as Admin
+        </div>
+      </div>
+      <div class="overview-container row col-12">
+        <div class="div col-6 col-md ">
+          <div class="col card ">
+            <div class="stats-card-title col-12">
+              Total Videos
+            </div>
+            <div class="stats-card-value col-12" id="currentDayClicks">
+              <%= result.totalVideos %>
+            </div>
+          </div>
+        </div>
+     
+        <div class="div col-6 col-md">
+          <div class="col card ">
+            <div class="stats-card-title col-12">
+               Pending Videos
+            </div>
+            <div class="stats-card-value col-12" id="currentDayPPC">
+                <%= videos.length %>
+            </div>
+          </div>
+        </div>
+        <div class="div col-6 col-md">
+        </div>
+        <div class="div col-6  col-md">
+          
+        </div>
+      </div>
+      <div class="row col-12 chart-box">
+        <div class="col-12 col-lg-9 col-md-8">
+          <div class="col-12 chart-container" style="padding: 0 !important;">
+            <div class="row col-12 table-box">
+              <div class="col-12" style="padding: 0 !important;">
+                <div class="col-12 table-container">
+                  <div class="col-12 table-legends">
+                      <div class="col">Thumbnail</div>
+                      <div class="col">Title</div>
+                      <div class="col">Owner</div>
+                      <div class="col-5 col-md-3">Options</div>
+                </div>
+                
+                <div id="applications-wrapper">
+                    <% videos.forEach(e => { %>
+                      <div class="table-element" href="/watch?viewKey=<%= e._id %>">
+                        <div class="table-element-url col">
+                          <div class="thumbnail-box">
+                            <% if(e.thumbnail !== ""){ %>
+                            <img src="/data/<%= e.thumbnail %>" alt="">
+                            <% } else { %>
+                              <div class="thumbnail-placeholder"></div>
+                            <% } %>  
+                          </div>
+                        </div>
+                        <div class="table-element-url col">
+                          <%= e.title %>
+                        </div>
+                        <div class="table-element-email col ">
+                          <%= e.owner %>
+                        </div>
+                        <div class="table-element-options col-5 col-md-3">
+                            <a class="table-element-options-accept" data-toggle="modal" href="/approveVideo/<%= e._id %>">Accept</a>
+                            <a class="table-element-options-decline" data-toggle="modal" href="/declineVideo/<%= e._id %>">Decline</a>
+                            <a class="table-element-options-description" data-toggle="modal" href="/watch?viewKey=<%= e._id %>">Watch</a>
+                        </div>
+                      </div>
+                    <% }) %>
+                </div>
+                </div>
+            </div> 
+            </div>
+          </div>
+      </div>
+        <div class="col-12 col-md details-container">
+         
+        </div>
+      </div>
+
+  
+    <script src='../../frameworks/js/bootstrap.bundle.min.js'></script>
+    <script src='../../frameworks/js/bootstrap.min.js'></script>
+    <script src='../../frameworks/js/menu.js'></script>
+  </body>
+</html>

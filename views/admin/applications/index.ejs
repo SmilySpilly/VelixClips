@@ -1,0 +1,125 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Pragma" content="no-cache">
+
+    <link rel="stylesheet" href="../../frameworks/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../frameworks/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../../frameworks/css/nav.css">
+    <link rel="stylesheet" href="../../frameworks/css/menu.css">
+    <link rel="stylesheet" href="../../frameworks/css/videos.css">
+    <link rel="stylesheet" href="../../frameworks/css/adminNav.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <script src='../../frameworks/js/jquery-3.3.1.min.js'></script>
+    <script src="https://kit.fontawesome.com/dda5cbe6fd.js" crossorigin="anonymous"></script>
+    <title>VelixClips | Admin</title>
+  </head>
+  <body>
+
+    <%- include('../../../includes/adminNav.ejs') %>
+
+    <div class="main-container col">
+      <div class="title-block">
+        <div>
+          Admin Panel
+        </div>
+        <div>
+          Signed in as Admin
+        </div>
+      </div>
+      <div class="overview-container row col-12">
+        <div class="div col-6 col-md ">
+          <div class="col card ">
+            <div class="stats-card-title col-12">
+              Total Applications [TODAY]
+            </div>
+            <div class="stats-card-value col-12" id="currentDayClicks">
+              <%= result.totalApplications %>
+            </div>
+          </div>
+        </div>
+     
+        <div class="div col-6 col-md">
+          <div class="col card ">
+            <div class="stats-card-title col-12">
+               Pending Applications
+            </div>
+            <div class="stats-card-value col-12" id="currentDayPPC">
+                <%= apps.length %>
+            </div>
+          </div>
+        </div>
+        <div class="div col-6 col-md">
+        </div>
+        <div class="div col-6  col-md">
+          
+        </div>
+      </div>
+      <div class="row col-12 chart-box">
+        <div class="col-12 col-lg-9 col-md-8">
+          <div class="col-12 chart-container" style="padding: 0 !important;">
+            <div class="row col-12 table-box">
+              <div class="col-12" style="padding: 0 !important;">
+                <div class="col-12 table-container">
+                  <div class="col-12 table-legends">
+                      <div class="col">Email</div>
+                      <div class="col"></div>
+                      <div class="col-5 col-md-3">Options</div>
+                </div>
+                
+                <div id="applications-wrapper" style="overflow-y: scroll;">
+                    <% apps.forEach(e => { %>
+                      <div class="table-element">
+                        <div class="table-element-url col">
+                          <%= e.email %>
+                        </div>
+                        <div class="table-element-email col" data-toggle="collapse" data-target="#a<%= e._id %>" aria-expanded="false" aria-controls="collapseExample">
+                          Click to expend
+                        </div>
+                        <div class="table-element-options col-5 col-md-3">
+                            <a class="table-element-options-accept" href="/approveUser/<%= e._id %>" style="margin-right: 10px;color: white !important;">Accept</a>
+                            <a class="table-element-options-decline" href="/declineUser/<%= e._id %>" style="color: white !important;">Decline</a>
+                        </div>
+                    </div>
+                    <div class="collapse" id="a<%= e._id %>">
+                      <div class="card card-body">
+                        <div style="display: flex;">
+                          <b style="margin-right: 6px;">Name: </b> <%= e.name %>
+                        </div>
+                        <div style="display: flex;">
+                          <b style="margin-right: 6px;">Birthday: </b> <%= e.birthday %>
+                        </div>
+                        <div style="display: flex;">
+                          <b style="margin-right: 6px;">Country: </b> <%= e.country %>
+                        </div>
+                        <div style="display: flex;">
+                          <b style="margin-right: 6px;">Paypal: </b> <%= e.paypal %>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                    <% }) %>
+                </div>
+                </div>
+            </div> 
+            </div>
+          </div>
+      </div>
+        <div class="col-12 col-md details-container">
+         
+        </div>
+      </div>
+
+  
+    <script src='../../frameworks/js/bootstrap.bundle.min.js'></script>
+    <script src='../../frameworks/js/bootstrap.min.js'></script>
+    <script src='../../frameworks/js/menu.js'></script>
+  </body>
+</html>

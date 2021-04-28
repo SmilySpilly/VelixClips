@@ -31,14 +31,27 @@
                     <span class="views-container col-6"><%= videoViews %> Views</span>
                 </div>
                 <video width="auto" class="video-container" height="auto" controls>
+                      <% 
+                        var video = videoUUID
+                        video = video.split(".")
+                        vidExt = video[video.length - 1]
+                        if(vidExt == "mp4"){
+                     %>
                     <source src="/data/<%= videoUUID %>#t=0.5" type="video/mp4" poster="/imgs/acc.png">
+                    <% } else if(vidExt == "mov"){ %>
+                    <source src="/data/<%= videoUUID %>#t=0.5" type="video/mov" poster="/imgs/acc.png">
+                    <% } else if(vidExt == "ogg"){ %>
+                    <source src="/data/<%= videoUUID %>#t=0.5" type="video/ogg" poster="/imgs/acc.png">
+                    <% } else if(vidExt == "wmv"){ %>
+                    <source src="/data/<%= videoUUID %>#t=0.5" type="video/OGV" poster="/imgs/acc.png">
+                    <% } %>
                         Your browser doesn't support videos, please use another browser.
                 </video> 
                 <div class="video-includes row col-12">
                     <div class="video-bar row col-12">
                         <div class="user-channel col-8">
                             <span class="channel-pfp">
-                                <img src="/imgs/avatar/<%= avatar %>" alt="">
+                                <img src="/imgs/avatar/<%= ChannelAvatar %>" alt="">
                             </span>
 
                             <span class="channel-name">
@@ -78,13 +91,13 @@
                             </span>   
                         </div>
 
-                        <% if(admin === true){ %>
+                        <% if(admin === true || owner === true){ %>
                         <div class="btn-group dropleft">
                             <button type="button" class="dropdown-button-staff" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                             </button>
                             <div class="dropdown-menu">
-                                <button class="dropdown-item" id="remove-video">Delete Video</button>
+                                <a class="dropdown-item" href="/declineVideo/<%= videoID %>">Delete Video</a>
                             </div>
                         </div>
                         <% } %>

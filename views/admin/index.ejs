@@ -1,0 +1,164 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Pragma" content="no-cache">
+
+    <link rel="stylesheet" href="../frameworks/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../frameworks/css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="../frameworks/css/nav.css">
+    <link rel="stylesheet" href="../frameworks/css/menu.css">
+    <link rel="stylesheet" href="../frameworks/css/videos.css">
+    <link rel="stylesheet" href="../frameworks/css/adminNav.css">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    <script src='../frameworks/js/jquery-3.3.1.min.js'></script>
+    <script src="https://kit.fontawesome.com/dda5cbe6fd.js" crossorigin="anonymous"></script>
+    <title>VelixClips | Admin</title>
+  </head>
+  <body>
+
+    <%- include('../../includes/adminNav.ejs') %>
+
+    <div class="main-container col">
+      <div class="title-block">
+        <div>
+          Admin Panel
+        </div>
+        <div>
+          Signed in as Admin
+        </div>
+      </div>
+      <div class="overview-container row col-12">
+        <div class="div col-6 col-md ">
+          <div class="col card ">
+            <div class="stats-card-title col-12">
+              NEW MEMBERS [TODAY]
+            </div>
+            <div class="stats-card-value col-12" id="currentDayClicks">
+              <%= result.membersToday %>
+            </div>
+          </div>
+        </div>
+        <div class="div col-6  col-md">
+          <div class="col card ">
+            <div class="stats-card-title col-12">
+                PENDING MEMBERS
+            </div>
+            <div class="stats-card-value col-12" id="currentDayRevenue">
+              <%= pendingUsers %>
+            </div>
+          </div>
+        </div>
+        <div class="div col-6 col-md">
+          <div class="col card ">
+            <div class="stats-card-title col-12">
+               NEW VIDEOS [TODAY]
+            </div>
+            <div class="stats-card-value col-12" id="currentDayPPC">
+                <%= result.videosToday %>
+            </div>
+          </div>
+        </div>
+        <div class="div col-6 col-md">
+          <div class="col card ">
+            <div class="stats-card-title col-12">
+              PENDING VIDEOS
+            </div>
+            <div class="stats-card-value col-12" id="currentDayeCPM">
+                <%= pendingVideos %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row col-12 chart-box">
+        <div class="col-12 col-lg-9 col-md-8">
+          <div class="col-12 chart-container">
+            <div class="col-12 chart-legends">
+              <span style="font-size: 18.64px;font-weight: 600;">Videos | Members</span> 
+              <span>Last 7 days</span>
+          </div>
+            <canvas id="line-chart"></canvas>
+          </div>
+      </div>
+        <div class="col-12 col-md details-container">
+          <div class="details-content col">
+            <div class="col-12 details-title" style="font-weight: 600;font-size:17px">Overview</div>
+            <div class="mid-line col-12"></div>
+            <div class="col-12 details-element">
+              <div class="col-12 details-element-title">
+                New Views [Today]
+              </div>
+              <div class="col-12 details-element-value"><%= result.TodayViews %></div>
+            </div>
+            <div class="mid-line col-12"></div>
+            <div class="col-12 details-element">
+              <div class="col-12 details-element-title">
+                New Subscribers [Today]
+              </div>
+              <div class="col-12 details-element-value"><%= result.TodaySubs %></div>
+            </div>
+            <div class="mid-line col-12"></div>
+            <div class="col-12 details-element">
+              <div class="col-12 details-element-title">
+                New Likes [Today]
+              </div>
+              <div class="col-12 details-element-value"><%= result.Todaylikes %></div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+  
+      <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+    <script>
+        var ctx = document.getElementById('line-chart').getContext('2d');
+        myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["#1", "#2", "#3", "#4", "#5", "#6", "#7", ],
+                datasets: [{
+                    label: 'Members',
+                    data: [<%= result.WeeklyMembers.a %>,<%= result.WeeklyMembers.b %>,<%= result.WeeklyMembers.c %>,<%= result.WeeklyMembers.d %>,<%= result.WeeklyMembers.e %>,<%= result.WeeklyMembers.f %>,<%= result.WeeklyMembers.g %>,],
+                    borderColor: '#11C26D',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Videos',
+                    data: [<%= result.WeeklyVideos.a %>,<%= result.WeeklyVideos.b %>,<%= result.WeeklyVideos.c %>,<%= result.WeeklyVideos.d %>,<%= result.WeeklyVideos.e %>,<%= result.WeeklyVideos.f %>,<%= result.WeeklyVideos.g %>,],
+                    borderColor: '#DF61E2',
+                    borderWidth: 1,
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stacked: true
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                },
+                tooltips: {
+                mode: 'index',
+                    intersect: false
+                }
+            }
+        });
+
+    </script>
+    <!-- Made by agamer665@gmail.com <- CREATOR [PAID JOB] -->
+    <script src='../frameworks/js/bootstrap.bundle.min.js'></script>
+    <script src='../frameworks/js/bootstrap.min.js'></script>
+    <script src='../frameworks/js/menu.js'></script>
+  </body>
+</html>

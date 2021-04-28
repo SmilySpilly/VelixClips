@@ -12,6 +12,7 @@ const VideosSchema = new mongoose.Schema({
   thumbnail: { type: String, required: false },
   comments: { type: Number, required: false },
   description: { type: String, required: false },
+  status: { type: Boolean, default: false },
   published: { type: Date, default: Date.now },
 });
 

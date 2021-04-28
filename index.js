@@ -20,6 +20,8 @@ const videos = require("./database/models/videos");
 const multer = require("multer");
 const user = require("./database/models/user");
 const { update } = require("./database/models/user");
+const ADMIN = require("./database/models/admin")
+const Applications = require("./database/models/applications")
 const e = require("express");
 const { connect } = require("pm2");
 const { exit } = require("process");
@@ -86,7 +88,9 @@ app.post("/register", (req, res) => {
       newUser.save().then(() => {
         UserModel.find({ username }, (cookieReq, cookieRes) => {
           req.session.user = cookieRes._id;
-        });
+        }).then( 
+          ADMIN.updateOne({}, {$inc: {totalMembers: 1}, $inc: {membersToday: 1}}, (req, resUpdate) => {}) 
+        );
       });
 
       // Redirecting to main page
@@ -105,12 +109,12 @@ app.post("/login", (req, res) => {
   } else {
     UserModel.find({ email }, (request, result) => {
       if (result.length > 0) {
-        if (password == result[0].password) {
-          req.session.user = result[0]._id;
-          res.redirect("/");
-        } else {
-          res.redirect("/?alert=Incorrect password!");
-        }
+          if (password == result[0].password) {
+            req.session.user = result[0]._id;
+            res.redirect("/");
+          } else {
+            res.redirect("/?alert=Incorrect password!");
+          }
       } else {
         res.redirect("/?alert=User doesn't exist!");
       }
@@ -154,7 +158,7 @@ app.get("/channel", (req, res) => {
     UserModel.findById(req.session.user, (request, result) => {
       if (!channelOwner) {
         VideoModel.find(
-          { owner: RegExp(channelOwner, "i") },
+          { owner: result.username},
           (videoReq, videoInfo) => {
             res.render("channel/index", {
               status: "logged",
@@ -199,7 +203,7 @@ app.get("/channel", (req, res) => {
     const alert = req.query.alert;
 
     if (!channelOwner) {
-      res.redirect("/?alert=You Must be logged in to view your history!");
+      res.redirect("/?alert=You Must be logged in to view your channel!");
     } else {
       UserModel.find({ username: channelOwner }, (request, result) => {
         if (result.length < 1) {
@@ -418,6 +422,181 @@ app.get("/trending", (req, res) => {
   }
 });
 
+// Admin panel
+app.get("/admin", (req,res) => { 
+    if(req.session.user) {
+      UserModel.findById(req.session.user, (request, result) => { 
+        if(result.admin === true){
+          ADMIN.find({}, (req,adminRes) => {
+            UserModel.find({active: false}, (req, res1) => {
+              VideoModel.find({status: false}, (req, res2) => {
+                res.render("admin/index", {
+                  status: "logged",
+                  user: result,
+                  result: adminRes[0],
+                  pendingUsers: res1.length ,
+                  pendingVideos: res2.length,                 
+                })
+              })
+            })
+          })
+        } else {
+          res.redirect("/",  {alert: ""})
+        }
+      })
+    } else {
+      res.redirect("/", {alert: ""})
+    }
+})
+
+app.get("/admin/applications", (req,res) => { 
+  if(req.session.user) {
+    UserModel.findById(req.session.user, (request, result) => { 
+      if(result.admin === true){
+        ADMIN.find({}, (req,adminRes) => {
+          Applications.find({}, (req, res1) => {
+              res.render("admin/applications/index", {
+                status: "logged",
+                user: result,
+                result: adminRes[0],
+                apps: res1 ,            
+            })
+          })
+        })
+      } else {
+        res.redirect("/",  {alert: ""})
+      }
+    })
+  } else {
+    res.redirect("/", {alert: ""})
+  }
+})
+
+app.get("/admin/videos", (req,res) => { 
+  if(req.session.user) {
+    UserModel.findById(req.session.user, (request, result) => { 
+      if(result.admin === true){
+        ADMIN.find({}, (req,adminRes) => {
+            VideoModel.find({status: false}, (req, res2) => {
+              res.render("admin/videos/index", {
+                status: "logged",
+                user: result,
+                result: adminRes[0],
+                videos: res2,                 
+            })
+          })
+        })
+      } else {
+        res.redirect("/",  {alert: ""})
+      }
+    })
+  } else {
+    res.redirect("/", {alert: ""})
+  }
+})
+
+app.post("/CCFProgramSubmit", (req,res) =>{
+  UserModel.findById(req.session.user, (request,result) => {
+    if(result.CCFProgram === true) {
+      res.send({success: true, msg:"Program is active."})
+    } else {
+      Applications.find({userID: result._id}, (request,appRes) => {
+        if (appRes.length > 0){ 
+          res.send({success: false, msg:"You have an application submited."})
+        } else { 
+          var newapplication = new Applications({
+            userID: result._id,
+            name: req.body.name,
+            email: result.email,
+            birthday: req.body.birthday,
+            country: req.body.country,
+            paypal: req.body.paypal,
+          }) 
+
+          newapplication.save()
+
+          ADMIN.updateOne({}, {$inc: {totalApplications: 1, applicationsToday: 1}}, (req,UpdateRes) => {})
+          res.send({success: true, msg:"Success!"})
+        }
+      })
+    }
+  })
+})
+
+app.get("/approveUser/:id",(req,res) => {
+  var id = req.params.id;
+  if(req.session.user){
+    UserModel.findById(req.session.user, (req,result) => {
+      if(result.admin === true) {
+        Applications.find({_id: id}, (req,appRes) => {
+          UserModel.updateOne({_id: appRes[0].userID}, {CCFProgram: true}, (req,updateRES) => {})
+          Applications.deleteOne({_id: id}, (req,updateRES) => { console.log(updateRES)})
+                  
+          res.redirect("/admin/applications")
+        })
+      } else {
+        res.redirect("/", {alert: "Wrong URL"})
+      }
+    })
+  } else {
+    res.redirect("/", {alert: "Wrong URL"})
+  }
+})
+
+app.get("/declineUser/:id",(req,res) => {
+  var id = req.params.id;
+  if(req.session.user){
+    UserModel.findById(req.session.user, (req,result) => {
+      if(result.admin === true) {
+        Applications.deleteOne({_id: id}, (req,updateRES) => {})
+
+        res.redirect("/admin/applications")
+      } else {
+        res.redirect("/", {alert: "Wrong URL"})
+      }
+    })
+  } else {
+    res.redirect("/", {alert: "Wrong URL"})
+  }
+})
+
+app.get("/approveVideo/:id",(req,res) => {
+  var id = req.params.id;
+  if(req.session.user){
+    UserModel.findById(req.session.user, (req,result) => {
+      if(result.admin === true) {
+
+        VideoModel.updateOne({_id: id}, {status: true}, (req,updateRES) => {})
+        res.redirect("/admin/videos")
+      } else {
+        res.redirect("/", {alert: "Wrong URL"})
+      }
+    })
+  } else {
+    res.redirect("/", {alert: "Wrong URL"})
+  }
+})
+
+app.get("/declineVideo/:id",(req,res) => {
+  var id = req.params.id;
+  if(req.session.user){
+    UserModel.findById(req.session.user, (req,result) => {
+      if(result.admin === true) {
+
+        VideoModel.deleteOne({_id: id}, (req,updateRES) => {}).then(
+          ADMIN.updateOne({}, {$inc : {totalVideos: -1}}, (req, resUpdate) => {}) 
+        )
+        
+        res.redirect("/")
+      } else {
+        res.redirect("/", {alert: "Wrong URL"})
+      }
+    })
+  } else {
+    res.redirect("/", {alert: "Wrong URL"})
+  }
+})
+
 // Profile Editor
 app.get("/watch", (req, res) => {
   const viewKey = req.query.viewKey;
@@ -431,14 +610,17 @@ app.get("/watch", (req, res) => {
         UserModel.findById(videoRes.channelID, (req, channel) => {
           if (sessionCheck != 0) {
             UserModel.findById(sessionCheck, (request, result) => {
+              var owner = channel.owner == result.username ? true : false
               res.render("watch/index", {
                 status: "logged",
                 user: result,
                 admin: result.admin,
+                owner,
                 userID: sessionCheck,
                 videoID: viewKey,
                 username: result.username,
                 avatar: result.avatar,
+			        	ChannelAvatar: channel.avatar,
                 videoTitle: videoRes.title,
                 videoUUID: videoRes.uuid,
                 videoOwner: videoRes.owner,
@@ -463,6 +645,11 @@ app.get("/watch", (req, res) => {
                   { _id: viewKey },
                   { $inc: { views: +1 } },
                   (req, res) => {}
+                );
+                ADMIN.updateOne(
+                  { },
+                  { $inc: { TodayViews:  +1 },  },
+                  (req, result) => {}
                 );
 
                 // if (result.history.length > 150) {
@@ -495,6 +682,7 @@ app.get("/watch", (req, res) => {
                 avatar: result[0].avatar,
                 user: undefined,
                 channelID: videoRes.channelID,
+                owner: false
               });
             });
           }
@@ -602,7 +790,7 @@ app.get("/catagory", (req, res) => {
                 title: "Gaming",
                 result,
                 status: checkUser(),
-                avatar
+                avatar: ""
               });
             });
         } else if (query == "comedy") {
@@ -613,7 +801,7 @@ app.get("/catagory", (req, res) => {
                 title: "Comedy",
                 result,
                 status: checkUser(),
-                avatar,
+                avatar: "",
               });
             });
         } else if (query == "vlogs") {
@@ -624,7 +812,7 @@ app.get("/catagory", (req, res) => {
                 title: "Vlogs",
                 result,
                 status: checkUser(),
-                avatar,
+                avatar: "",
               });
             });
         } else if (query == "academy") {
@@ -635,7 +823,7 @@ app.get("/catagory", (req, res) => {
                 title: "Academy",
                 result,
                 status: checkUser(),
-                avatar,
+                avatar: "",
               });
             });
         }
@@ -665,6 +853,11 @@ app.post("/newReaction", (req, res) => {
             { $inc: { likes: -1 } },
             (req, result) => {}
           );
+          ADMIN.updateOne(
+            { },
+            { $inc: { Todaylikes:  -1 } },
+            (req, result) => {}
+          );
         } else {
           // if No
           UserModel.updateOne(
@@ -672,7 +865,11 @@ app.post("/newReaction", (req, res) => {
             { $push: { likedVideos: videoID } },
             (req, result) => {}
           );
-
+          ADMIN.updateOne(
+            { },
+            { $inc: { Todaylikes:  1 } },
+            (req, result) => {}
+          );
           VideoModel.updateOne(
             { _id: videoID },
             { $inc: { likes: 1 } },
@@ -774,6 +971,11 @@ app.post("/channel/subscribe", (req, res) => {
               console.log(changes);
             }
           );
+          ADMIN.updateOne(
+            { },
+            { $inc: { TodaySubs:  +1 } },
+            (req, result) => {}
+          );
 
           // Updating the Channel
           UserModel.updateOne(
@@ -799,6 +1001,11 @@ app.post("/channel/subscribe", (req, res) => {
             }
           );
 
+          ADMIN.updateOne(
+            { },
+            { $inc: { TodaySubs:  -1 } },
+            (req, result) => {}
+          );
           // Updating the Channel
           UserModel.updateOne(
             { _id: channelID },
@@ -823,8 +1030,6 @@ app.post("/channel/subscribe", (req, res) => {
 app.post("/upload", (req, res) => {
   if (req.session.user) {
     UserModel.findById(req.session.user, (request, result) => {
-
-      UserModel.updateOne({_id: result._id}, {notifications: true}, (req, resUpdate) => {})
 
       const storage = multer.diskStorage({
         destination: "./public/data/",
@@ -872,7 +1077,9 @@ app.post("/upload", (req, res) => {
           });
 
           newVideo.save().then(
-            console.log("DONE")
+             ADMIN.updateOne({}, {$inc: {totalVideos: 1}, $inc: {videosToday: 1}}, (req, resUpdate) => {}).then(
+              UserModel.updateOne({_id: result._id}, {notifications: true}, (req, resUpdate) => {}) 
+             )
           );
           res.redirect("/");
         }
@@ -963,14 +1170,14 @@ app.get("/getUser", (req, res) => {
 app.get("/getVideos", (req, res) => {
   const method = req.query.method;
   if (!method) {
-    VideoModel.find({})
+    VideoModel.find({status:true})
       .limit(8)
       .sort({ published: -1 })
       .exec(function (err, videos) {
         res.send(videos);
       });
   } else if (method == "trending") {
-    VideoModel.find({})
+    VideoModel.find({status:true})
       .limit(12)
       .sort({ views: -1 })
       .exec(function (err, posts) {
@@ -983,7 +1190,7 @@ app.get("/getVideos", (req, res) => {
       .limit(3)
       .sort({ views: -1 })
       .exec(function (err, posts) {
-        VideoModel.find({})
+        VideoModel.find({status:true})
           .limit(18)
           .exec(function (err, result) {
             res.send([posts, result]);
@@ -1012,7 +1219,7 @@ app.get("/getVideos", (req, res) => {
       }
     }
   } else {
-    VideoModel.find({})
+    VideoModel.find({status:true})
       .limit(16)
       .sort({ published: 1 })
       .exec(function (err, videos) {
@@ -1101,6 +1308,36 @@ app.post("/payment/pay", (req, res) => {
   });
 });
 
+app.post("/updateAdminPanel", (req,res) => {
+  ADMIN.find({}, (req,result) => {
+    ADMIN.updateOne({}, {
+      "WeeklyVideos.a": result.WeeklyVideos.a ,
+      "WeeklyVideos.b": result.WeeklyVideos.b ,
+      "WeeklyVideos.c": result.WeeklyVideos.c ,
+      "WeeklyVideos.d": result.WeeklyVideos.d ,
+      "WeeklyVideos.e": result.WeeklyVideos.e ,
+      "WeeklyVideos.f": result.WeeklyVideos.f ,
+      "WeeklyVideos.g": result.WeeklyVideos.g ,
+     
+      "WeeklyMembers.a": result.WeeklyMembers.a ,
+      "WeeklyMembers.b": result.WeeklyMembers.b ,
+      "WeeklyMembers.c": result.WeeklyMembers.c ,
+      "WeeklyMembers.d": result.WeeklyMembers.d ,
+      "WeeklyMembers.e": result.WeeklyMembers.e ,
+      "WeeklyMembers.f": result.WeeklyMembers.f ,
+      "WeeklyMembers.g": result.WeeklyMembers.g ,
+      
+      Todaylikes: 0,
+      TodayViews: 0,
+      TodaySubs: 0,
+      videosToday: 0,
+      applicationsToday: 0,
+      
+    }, (req,resUPDATE) => {})
+  })
+
+})
+
 // If Success
 app.get("/payment/success", (req, res) => {
   const payerId = req.query.PayerID;
@@ -1154,12 +1391,14 @@ app.get("/payment/cancel", (req, res) => res.redirect("/"));
 
 // Testing Page
 app.get("/test", (req, res) => {
-  VideoModel.find({ tags: "Anime" })
-    .limit(3)
-    .sort({ views: -1 })
-    .exec(function (err, posts) {
-      res.send(posts);
-    });
+//  var newADMIN = new ADMIN({
+//   applicationsToday: 0,
+//   videosToday: 0,
+//   WeeklyVideos: {a: 0, b: 0, c: 0, d: 0, e: 0, f: 0, g: 0},
+//   WeeklyMembers: {a: 0, b: 0, c: 0, d: 0, e: 0, f: 0, g: 0},
+//  })
+
+//  newADMIN.save()
 });
 
 // 404 Pages
